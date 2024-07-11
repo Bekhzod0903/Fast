@@ -1,10 +1,9 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
-from config import SQLALCHEMY_DATABASE_URL
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+from sqlalchemy.orm import Session
+from database import SessionLocal, engine
+from models import Base, User
 
 def init_db():
     Base.metadata.create_all(bind=engine)
+    db: Session = SessionLocal()
+    db.commit()
+    db.close()

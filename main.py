@@ -7,7 +7,9 @@ from schemas import UserCreate, User
 from crud import create_user, get_user, verify_password
 from auth import create_access_token, Token, verify_token
 from datetime import timedelta
+from init_db import init_db
 
+# Create the database tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -53,11 +55,6 @@ def read_users_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get
     if user is None:
         raise credentials_exception
     return user
-
-from fastapi import FastAPI
-from init_db import init_db
-
-app = FastAPI()
 
 @app.on_event("startup")
 async def startup_event():
